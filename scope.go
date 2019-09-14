@@ -1438,3 +1438,9 @@ func (scope *Scope) hasConditions() bool {
 		len(scope.Search.orConditions) > 0 ||
 		len(scope.Search.notConditions) > 0
 }
+
+// StructsAreNormal allows structs to be first
+// class data types (for snowflake / cassandra / etc) 
+func (scope Scope) StructsAreNormal() bool {
+	return scope.db.Dialect().StructsAreNormal()
+}

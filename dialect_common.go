@@ -28,6 +28,10 @@ func (commonDialect) GetName() string {
 	return "common"
 }
 
+func (s *commonDialect) StructsAreNormal() bool {
+	return false
+}
+
 func (s *commonDialect) SetDB(db SQLCommon) {
 	s.db = db
 }
@@ -158,6 +162,10 @@ func (commonDialect) SelectFromDummyTable() string {
 }
 
 func (commonDialect) LastInsertIDReturningSuffix(tableName, columnName string) string {
+	return ""
+}
+
+func (commonDialect) InsertValuesModifier(fields []*Field) string {
 	return ""
 }
 

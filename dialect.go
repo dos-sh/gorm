@@ -22,7 +22,8 @@ type Dialect interface {
 	Quote(key string) string
 	// DataTypeOf return data's sql type
 	DataTypeOf(field *StructField) string
-
+	// StructsAreNormal for Snowflake
+	StructsAreNormal() bool
 	// HasIndex check has index or not
 	HasIndex(tableName string, indexName string) bool
 	// HasForeignKey check has foreign key or not
@@ -53,6 +54,10 @@ type Dialect interface {
 
 	// CurrentDatabase return current database name
 	CurrentDatabase() string
+
+	// InsertValueModifier allows for inserts via select. Used in Snowflake 
+	// for OBJECT / ARRAY / VARIANT data types.
+	InsertValuesModifier(fields []*Field) string 
 }
 
 var dialectsMap = map[string]Dialect{}

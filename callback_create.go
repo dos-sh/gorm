@@ -113,10 +113,11 @@ func createCallback(scope *Scope) {
 			))
 		} else {
 			scope.Raw(fmt.Sprintf(
-				"INSERT %v INTO %v (%v) VALUES (%v)%v%v",
+				"INSERT %v INTO %v (%v) %v VALUES (%v)%v%v",
 				addExtraSpaceIfExist(insertModifier),
 				scope.QuotedTableName(),
 				strings.Join(columns, ","),
+				scope.Dialect().InsertValuesModifier(scope.Fields()),
 				strings.Join(placeholders, ","),
 				addExtraSpaceIfExist(extraOption),
 				addExtraSpaceIfExist(lastInsertIDReturningSuffix),

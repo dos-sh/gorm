@@ -439,7 +439,8 @@ func (scope *Scope) GetModelStruct() *ModelStruct {
 								field.IsNormal = true
 							}
 						}(field)
-					case reflect.Struct:
+					case reflect.Struct:					
+						field.IsNormal = scope.StructsAreNormal()
 						defer func(field *StructField) {
 							var (
 								// user has one profile, associationType is User, profile use UserID as foreign key
