@@ -31,7 +31,7 @@ func (s snowflake) CurrentDatabase() string {
 	return dbName
 }
 
-func (s snowflake) StructsAreNormal() bool {
+func (snowflake) StructsAreNormal() bool {
 	return true
 }
 
@@ -85,6 +85,7 @@ func (s snowflake) HasIndex(tableName string, indexName string) bool {
 
 // DataTypeOf translates Go types to SQL types via reflection for table creation
 func (s *snowflake) DataTypeOf(field *StructField) string {
+	fmt.Println("Yelp")
 	var dataValue, sqlType, size, additionalType = ParseFieldStructForDialect(field, s)
 	fmt.Printf("Type %v: %v\n", dataValue.Kind(), dataValue)
 	if sqlType == "" {
