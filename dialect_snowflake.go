@@ -1,4 +1,11 @@
 package gorm
+/*/
+	Snowflake dialect implenetation to support VARIANT data type
+
+	09/23/2019
+	d. connell
+	dconnell@dos.sh	
+ /*/
 
 import (
 	"fmt"
@@ -45,8 +52,6 @@ func (s snowflake) CurrentSchema() string {
 	return schema
 }
 
-
-
 // HasTable checks current db/schema for table existance
 func (s snowflake) HasTable(tableName string) bool {
 	var count int
@@ -83,7 +88,9 @@ func (s snowflake) HasIndex(tableName string, indexName string) bool {
 	return count > 0
 }
 
-// DataTypeOf translates Go types to SQL types via reflection for table creation
+// DataTypeOf translates Go types to SQL types via reflection for table creation. In
+// particular, this sets up structs and arrays for the VARIANT SQL typen used by 
+// snowflake
 func (s *snowflake) DataTypeOf(field *StructField) string {
 	fmt.Println("Yelp")
 	var dataValue, sqlType, size, additionalType = ParseFieldStructForDialect(field, s)
@@ -99,7 +106,6 @@ func (s *snowflake) DataTypeOf(field *StructField) string {
 			} else {
 				sqlType = "INTEGER"
 			}
-
 		case reflect.Float32, reflect.Float64:
 			sqlType = "NUMERIC"
 		case reflect.String:
@@ -146,10 +152,13 @@ func (s *snowflake) DataTypeOf(field *StructField) string {
 	return fmt.Sprintf("%v %v", sqlType, additionalType)
 }
 
+// SupportsLastInsertID allows SQL return of new keys
 func (snowflake) SupportLastInsertID() bool {
 	return true
 }
 
+// InsertValuesModifier allows the SELECT FROM format
+// to add JSON_PARSE function call in insert 
 func (snowflake) InsertValuesModifier(fields []*Field) string {
 	var fmtStr, colSelector string
 	for i, fld := range fields {

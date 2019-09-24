@@ -68,8 +68,6 @@ type Variant struct {
 	value []byte
 }
 
-// DB Type prereqs
-
 // Value returns a proper value to
 // for writing to db
 func (o Variant) Value() (driver.Value, error) {
@@ -87,9 +85,9 @@ func (o *Variant) Scan(value interface{}) (err error) {
 	return
 }
 
-// Dev API
-
-// NewVariant create a new Variant type
+// NewVariant create a new Variant type from GO
+// stuct or array. Error returned if not JSON 
+// parsable 
 func NewVariant(v interface{}) (Variant, error) {
 	var o Variant
 	err := o.Set(v)
